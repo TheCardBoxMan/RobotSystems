@@ -1,22 +1,20 @@
-from robot_hat import Pin, ADC, PWM, Servo, fileDB
-from robot_hat import Grayscale_Module, Ultrasonic, utils
 import time
 import os
-import logging
 import math
+import logging
 import atexit
 
 try:
     from robot_hat import Pin, ADC, PWM, Servo, fileDB
     from robot_hat import Grayscale_Module, Ultrasonic
-    from robot_hat.utils import reset_mcu, run_command
+    from robot_hat.utils import reset_mcu, run_command # On Robot
 except ImportError:
     from sim_robot_hat import Pin, ADC, PWM, Servo, fileDB
     from sim_robot_hat import Grayscale_Module, Ultrasonic
-    from sim_robot_hat import reset_mcu, run_command
+    from sim_robot_hat import reset_mcu, run_command # ON Computer
 
-reset_mcu()
-time.sleep(0.2)
+reset_mcu() # reset robot_hat
+time.sleep(0.2) # reset robot_hat
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO,
 datefmt="%H:%M:%S")
@@ -58,8 +56,7 @@ class Picarx(object):
                 ):
 
         # reset robot_hat
-        utils.reset_mcu()
-        time.sleep(0.2)
+
 
         # --------- config_flie ---------
         self.config_flie = fileDB(config, 777, os.getlogin())
