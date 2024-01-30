@@ -2,7 +2,24 @@ from robot_hat import Pin, ADC, PWM, Servo, fileDB
 from robot_hat import Grayscale_Module, Ultrasonic, utils
 import time
 import os
+import logging
+import math
+import atexit
 
+try:
+    from robot_hat import Pin, ADC, PWM, Servo, fileDB
+    from robot_hat import Grayscale_Module, Ultrasonic
+    from robot_hat.utils import reset_mcu, run_command
+except ImportError:
+    from sim_robot_hat import Pin, ADC, PWM, Servo, fileDB
+    from sim_robot_hat import Grayscale_Module, Ultrasonic
+    from sim_robot_hat import reset_mcu, run_command
+
+reset_mcu()
+time.sleep(0.2)
+logging_format = "%(asctime)s: %(message)s"
+logging.basicConfig(format=logging_format, level=logging.INFO,
+datefmt="%H:%M:%S")
 
 def constrain(x, min_val, max_val):
     '''
