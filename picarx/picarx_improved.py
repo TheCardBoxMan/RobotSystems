@@ -3,7 +3,7 @@ import time
 import os
 import math
 try:
-    from robot_hat import Pin, ADC, PWM, Servo, fileDB
+    from robot_hat import Pin, ADC, PWM, Servo, fileDB, SMBus
     from robot_hat import Grayscale_Module, Ultrasonic
     from robot_hat.utils import reset_mcu, run_command
 except ImportError:
@@ -269,6 +269,7 @@ class Picarx(object):
 
 if __name__ == "__main__":
     px = Picarx()
+    print("Yaya")
     px.forward(50)
     time.sleep(1)
     px.stop()
