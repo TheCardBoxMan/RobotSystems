@@ -1,23 +1,23 @@
+import logging
 import time
 import os
 import math
-import logging
-import atexit
-
 try:
     from robot_hat import Pin, ADC, PWM, Servo, fileDB
     from robot_hat import Grayscale_Module, Ultrasonic
-    from robot_hat.utils import reset_mcu, run_command # On Robot
+    from robot_hat.utils import reset_mcu, run_command
 except ImportError:
     from sim_robot_hat import Pin, ADC, PWM, Servo, fileDB
     from sim_robot_hat import Grayscale_Module, Ultrasonic
-    from sim_robot_hat import reset_mcu, run_command # ON Computer
-
-reset_mcu() # reset robot_hat
-time.sleep(0.2) # reset robot_hat
+    from sim_robot_hat import reset_mcu, run_command
+import logging
+import atexit
+reset_mcu()
+time.sleep(0.2)
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO,
 datefmt="%H:%M:%S")
+
 
 def constrain(x, min_val, max_val):
     '''
@@ -56,7 +56,8 @@ class Picarx(object):
                 ):
 
         # reset robot_hat
-
+        reset_mcu()
+        time.sleep(0.2)
 
         # --------- config_flie ---------
         self.config_flie = fileDB(config, 777, os.getlogin())
@@ -100,11 +101,14 @@ class Picarx(object):
         self.cliff_reference = self.config_flie.get("cliff_reference", default_value=str(self.DEFAULT_CLIFF_REF))
         self.cliff_reference = [float(i) for i in self.cliff_reference.strip().strip('[]').split(',')]
         # transfer reference
-        #self.grayscale.reference(self.line_reference) NO LONGER
+        self.grayscale.reference(self.line_reference)
 
         # --------- ultrasonic init ---------
         tring, echo= ultrasonic_pins
         self.ultrasonic = Ultrasonic(Pin(tring), Pin(echo))
+
+        # --------- stop when canceled ---------
+        atexit.register(self.stop)
         
     def set_motor_speed(self, motor, speed):
         ''' set motor speed
@@ -121,8 +125,8 @@ class Picarx(object):
         elif speed < 0:
             direction = -1 * self.cali_dir_value[motor]
         speed = abs(speed)
-        if speed != 0:
-            speed = int(speed /2 ) + 50
+        # if speed != 0:
+        #     speed = int(speed /2 ) + 50
         speed = speed - self.cali_speed_value[motor]
         if direction < 0:
             self.motor_direction_pins[motor].high()
@@ -193,7 +197,7 @@ class Picarx(object):
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
-            power_scale = (100 - abs_current_angle) / 100.0 
+            power_scale = math.cos(math.radians(abs_current_angle)) #ackerman steering approximations
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, -1*speed)
                 self.set_motor_speed(2, speed * power_scale)
@@ -210,7 +214,7 @@ class Picarx(object):
             abs_current_angle = abs(current_angle)
             if abs_current_angle > self.DIR_MAX:
                 abs_current_angle = self.DIR_MAX
-            power_scale = (100 - abs_current_angle) / 100.0
+            power_scale = math.cos(math.radians(abs_current_angle)) #ackerman steering approximations
             if (current_angle / abs_current_angle) > 0:
                 self.set_motor_speed(1, 1*speed * power_scale)
                 self.set_motor_speed(2, -speed) 
