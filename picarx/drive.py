@@ -38,7 +38,7 @@ def parallel_park(direct):
         move("f",2,0)
 
 if __name__ == "__main__":
-    action=input("1: Move forwards or backwards\n2: Parallel park\n3: K turn\n Selection: ")
+    action=input("1: Move \n2: Parallel park ")
     
     if action == "1":
         direct = input("Forward (f) or Backward (b): ")
@@ -48,5 +48,5 @@ if __name__ == "__main__":
     elif action == "2":
         direct=input("Left (l) or Right (r) Parking: ")
         parallel_park(direct)
-    elif action == "3":
-        print("Not implemented")
+    else:
+        print("Not A Function")
