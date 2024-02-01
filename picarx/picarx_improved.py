@@ -10,10 +10,13 @@ except ImportError:
     from sim_robot_hat import Pin, ADC, PWM, Servo, fileDB
     from sim_robot_hat import Grayscale_Module, Ultrasonic
     from sim_robot_hat import reset_mcu, run_command
-import logging
+
 import atexit
 reset_mcu()
 time.sleep(0.2)
+
+
+import logging #Sets Up Logging with: logging.debug("message")
 logging_format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=logging_format, level=logging.INFO,
 datefmt="%H:%M:%S")
@@ -192,6 +195,7 @@ class Picarx(object):
         self.set_motor_speed(2, speed)
 
     def backward(self, speed):
+        #logging.debug("Mater Style Activated")
         current_angle = self.dir_current_angle
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
@@ -209,6 +213,7 @@ class Picarx(object):
             self.set_motor_speed(2, speed)  
 
     def forward(self, speed):
+        #logging.debug("Lightning Style Activated")
         current_angle = self.dir_current_angle
         if current_angle != 0:
             abs_current_angle = abs(current_angle)
