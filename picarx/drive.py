@@ -52,3 +52,4 @@ if __name__ == "__main__":
         print("yay")
     else:
         print("Not A Function")
+        move("b",5,0)
