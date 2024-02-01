@@ -43,10 +43,12 @@ if __name__ == "__main__":
     if action == "1":
         direct = input("Forward (f) or Backward (b): ")
         dist = input("Distance in inches: ")
-        angle = input("Angle: ")
+        angle = int(input("Angle: "))
         move(direct,dist,angle)
+        print("ran it boy?")
     elif action == "2":
         direct=input("Left (l) or Right (r) Parking: ")
         parallel_park(direct)
+        print("yay")
     else:
         print("Not A Function")
