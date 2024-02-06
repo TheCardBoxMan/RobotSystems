@@ -15,7 +15,7 @@ def move (direct, dist, angle):
 
     car.set_dir_servo_angle(angle)
     speed = 50
-    wait = dist * vel
+    wait = int(dist) * int(vel)
 
     if direct == "f":
         car.forward(speed)
