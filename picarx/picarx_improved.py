@@ -57,6 +57,7 @@ class Picarx(object):
                 ultrasonic_pins:list=['D2','D3'],
                 config:str=CONFIG,
                 ):
+        atexit.register(self.stop)
 
         # reset robot_hat
         reset_mcu()
