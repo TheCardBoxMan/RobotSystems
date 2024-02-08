@@ -27,5 +27,18 @@ class Sensor:
         print("read sensor")
         return (self.adc.read())
     
+class Interpreter():
+    def __init__(self, sensitivity_input:float(0.25), polarity_input:int(1)): #Defaut Vaules that work
+        self.sensitivity= sensitivity_input
+        self.polarity= polarity_input
+
+
+    def processing(self,vaules):
+        None
+
 if __name__=='__main__':
     print("Line Following Start")
+    sensor = Sensor()
+    print("end")
+
+#isn't correctly importing settings

@@ -286,7 +286,17 @@ class Sensor:
 
 if __name__ == "__main__":
     px = Picarx()
-    print("Yaya")
-    px.forward(50)
-    time.sleep(1)
-    px.stop()
+    print("Line Following Start")
+    sensor = Sensor()
+    print("end")
+    while True:
+        reading = sensor.read_sensor
+        print(reading)
+        time.sleep(2)
+
+
+
+    #print("Yaya")
+    #px.forward(50)
+    #time.sleep(1)
+    #px.stop()
