@@ -388,7 +388,7 @@ def LineFollowing(Sensor_Cycles):
 
         Line_Direction = interpret.proccessing(Sensor_List)
         controller.Control(Line_Direction)
-        time.sleep(1) #Delay for testing
+        #time.sleep(1) #Delay for testing
         
 def User_Input():
     action=input("Start Line Following?")
