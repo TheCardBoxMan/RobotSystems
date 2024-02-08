@@ -305,8 +305,9 @@ class Sensor: #Set up sensors and read the vaule
 
 
 class Interpreter():
-    def __init__(self, sensitivity_input:int(0.25), polarity_input:int(1)): #Defaut Vaules that work
+    def __init__(self, sensitivity_input, polarity_input):
         self.sensitivity= sensitivity_input
+        self.sensitivity = float(input("Input given Sensitivitiy: "))
         self.polarity= polarity_input
     def proccessing(self,sensor_vaules):
 
@@ -330,7 +331,6 @@ class Interpreter():
         print(self.sensitivity)
         for i in range(3):
             Vaule = self.polarity * norm_list[i]
-            print (Vaule)
             if Vaule > self.sensitivity:
                 self.significant[i] = 1
         print(self.significant)
@@ -373,7 +373,7 @@ def User_Input():
 if __name__ == "__main__":
     px = Picarx()
     sensor = Sensor()
-    interpret = Interpreter(0.25,1) #Default vaules of 0.25 & 1
+    interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     User_Cycles = User_Input()
     print(User_Cycles)
     LineFollowing(User_Cycles)
