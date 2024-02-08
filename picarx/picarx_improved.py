@@ -327,8 +327,11 @@ class Interpreter():
 
     def significance(self,norm_list):
         self.significant = [0] * 3
+        print(self.sensitivity)
         for i in range(3):
-            if self.polarity * norm_list[i] > int(self.sensitivity):
+            Vaule = self.polarity * norm_list[i]
+            print (Vaule)
+            if Vaule > self.sensitivity:
                 self.significant[i] = 1
         print(self.significant)
 
