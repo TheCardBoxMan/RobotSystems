@@ -280,9 +280,29 @@ class Sensor: #Set up sensors and read the vaule
         self.adc_3 = ADC('A2') #Left
         self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None) #Currently Doesn't do anything
 
-    def read_sensor(self):
+    def read_sensor(self,Calibrator):
         self.adc = px.get_grayscale_data() #Already gives it in a list... ex: [600,600,1000]
-        return self.adc
+        #Testing
+        #self.adc= [600,600,1000]
+
+        self.calibrated_adc = sensor.calibrate(self.adc,Calibrator)
+        return self.calibrated_adc
+    
+    def Intial_calibrate(self):
+        Intial_Vaules = px.get_grayscale_data()
+        #Testing
+        #Intial_Vaules = [600,600,1000]
+
+        Avg_Intial_Vaule = sum(Intial_Vaules)/len(Intial_Vaules)
+        Calibrator = [None]*3
+        for i in range(3):
+            Calibrator[i] = Intial_Vaules[i]-Avg_Intial_Vaule
+        return Calibrator
+    
+    def calibrate(self,base_sensor_vaules,Calibrator):
+        Calibaratred_Vaules = [x - y for x, y in zip(base_sensor_vaules , Calibrator)]
+        return Calibaratred_Vaules
+
 
 class Interpreter():
     def __init__(self, sensitivity_input:int(0.25), polarity_input:int(1)): #Defaut Vaules that work
@@ -292,6 +312,7 @@ class Interpreter():
 
         normlized_list = interpret.normilize(sensor_vaules)
         significant_list = interpret.significance(normlized_list)
+        return significant_list
 
     def normilize(self,sensor_vaules):
 
@@ -316,13 +337,12 @@ class Interpreter():
 
 
 def LineFollowing(Sensor_Cycles:-1):
+    Calibrator = sensor.Intial_calibrate()
+    print(Calibrator)
     print("Line Following Start")
     while Sensor_Cycles != 0:
         Sensor_Cycles -=1
-
-        Sensor_List = sensor.read_sensor()
-        #Testing Vaules
-        #Sensor_List = [600,600,1000]
+        Sensor_List = sensor.read_sensor(Calibrator)
 
         print(Sensor_List)
 
