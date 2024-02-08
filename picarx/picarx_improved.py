@@ -273,7 +273,7 @@ class Picarx(object):
         else:
             raise ValueError("grayscale reference must be a 1*3 list")
 
-class Sensor:
+class Sensor: #Set up sensors and read the vaule
     def __init__(self):
         self.adc_1 = ADC('A0') #Right
         self.adc_2 = ADC('A1') #Middle
@@ -284,6 +284,14 @@ class Sensor:
         print("read sensor")
         return (self.adc.read())
 
+class Interpreter():
+    def __init__(self, sensitivity_input:float(0.25), polarity_input:int(1)): #Defaut Vaules that work
+        self.sensitivity= sensitivity_input
+        self.polarity= polarity_input
+
+    
+
+
 def LineFollowing(Sensor_Cycles:-1):
     print("Line Following Start")
     while Sensor_Cycles != 0:
@@ -291,12 +299,12 @@ def LineFollowing(Sensor_Cycles:-1):
 
         reading = sensor.read_sensor
         print(reading)
-        time.sleep(2)
+        time.sleep(1) #Delay for testing
         
 def User_Input():
     action=input("Start Line Following?")
     if action == "":
-        action = 0 #Default Action makes infinate cycles
+        action = -1 #Default Action makes infinate cycles
         return action
     elif not action.isalpha():
         try:
@@ -313,8 +321,10 @@ def User_Input():
 if __name__ == "__main__":
     px = Picarx()
     sensor = Sensor()
+    #interpret = Interpreter() #Default vaules of 0.25 & 1
     User_Cycles = User_Input()
     print(User_Cycles)
+    LineFollowing(User_Cycles)
     print("Finished")
     
     #Testing
