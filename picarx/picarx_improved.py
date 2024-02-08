@@ -306,8 +306,11 @@ class Sensor: #Set up sensors and read the vaule
 
 class Interpreter():
     def __init__(self, sensitivity_input, polarity_input):
-        self.sensitivity= sensitivity_input
-        self.sensitivity = float(input("Input given Sensitivitiy: "))
+        try:
+            self.sensitivity = float(input("Input given Sensitivitiy: "))
+        except:
+            self.sensitivity= sensitivity_input
+
         self.polarity= polarity_input
     def proccessing(self,sensor_vaules):
 
@@ -336,21 +339,36 @@ class Interpreter():
         print(self.significant)
 
         return self.significant
+    
+class Controller():
+    def __init__(self):
+        try:
+            self.steering_factor = float(input("Input given Stearing Factor: "))
+        except:
+            self.steering_factor = 1
+    def Control(self,Line_Direction):
+        if Line_Direction == [0,1,0]:
+            print("Forward")
+        elif Line_Direction == [1,0,0]:
+            print("Turn Left")
+        elif Line_Direction == [0,0,1]:
+            print("Turn Right")
+        else:
+            print("Lost")
 
 
 
-def LineFollowing(Sensor_Cycles:-1):
+def LineFollowing(Sensor_Cycles):
     Calibrator = sensor.Intial_calibrate()
-    print(Calibrator)
+    #print(Calibrator)
     print("Line Following Start")
     while Sensor_Cycles != 0:
         Sensor_Cycles -=1
         Sensor_List = sensor.read_sensor(Calibrator)
-
         print(Sensor_List)
 
         Line_Direction = interpret.proccessing(Sensor_List)
-
+        controller.Control(Line_Direction)
         time.sleep(1) #Delay for testing
         
 def User_Input():
@@ -373,6 +391,7 @@ def User_Input():
 if __name__ == "__main__":
     px = Picarx()
     sensor = Sensor()
+    controller = Controller()
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     User_Cycles = User_Input()
     print(User_Cycles)
