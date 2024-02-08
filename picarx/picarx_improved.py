@@ -284,15 +284,38 @@ class Sensor:
         print("read sensor")
         return (self.adc.read())
 
-if __name__ == "__main__":
-    px = Picarx()
+def LineFollowing(Sensor_Cycles:-1):
     print("Line Following Start")
-    sensor = Sensor()
-    print("end")
-    while True:
+    while Sensor_Cycles != 0:
+        Sensor_Cycles -=1
+
         reading = sensor.read_sensor
         print(reading)
         time.sleep(2)
+        
+def User_Input():
+    action=input("Start Line Following?")
+    if action == "":
+        action = 0 #Default Action makes infinate cycles
+        return action
+    elif not action.isalpha():
+        try:
+            User_Num = int(action)
+            
+            if User_Num > 0:
+                print("Chosen Number of Cycles")
+                return User_Num
+        except ValueError:
+            print("Not a Valid Input")
+    else:
+        print("Not a Valid Input")
+
+if __name__ == "__main__":
+    px = Picarx()
+    sensor = Sensor()
+    User_Cycles = User_Input()
+    print(User_Cycles)
+    print("Finished")
 
 
 
