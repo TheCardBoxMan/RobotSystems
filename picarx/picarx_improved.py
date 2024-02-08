@@ -365,6 +365,7 @@ class Controller():
 
         self.px.set_dir_servo_angle(Steer_angle)
         print(Steer_angle)
+        self.px.forward(25)
 
 
 
