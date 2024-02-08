@@ -345,8 +345,11 @@ class Controller():
         self.px = Picarx()
         try:
             self.steering_factor = float(input("Input given Stearing Factor: "))
+            self.power = float(input("Input given Power: "))
+
         except:
             self.steering_factor = 1
+            self.power = 25
     def Control(self,Line_Direction):
         Steer_angle = 0
 
@@ -365,7 +368,7 @@ class Controller():
 
         self.px.set_dir_servo_angle(Steer_angle)
         print(Steer_angle)
-        self.px.forward(25)
+        self.px.forward(controller.power)
 
 
 
