@@ -278,18 +278,41 @@ class Sensor: #Set up sensors and read the vaule
         self.adc_1 = ADC('A0') #Right
         self.adc_2 = ADC('A1') #Middle
         self.adc_3 = ADC('A2') #Left
-        self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None)
+        self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None) #Currently Doesn't do anything
 
     def read_sensor(self):
-        self.adc = px.get_grayscale_data()
+        self.adc = px.get_grayscale_data() #Already gives it in a list... ex: [600,600,1000]
         return self.adc
 
 class Interpreter():
-    def __init__(self, sensitivity_input:float(0.25), polarity_input:int(1)): #Defaut Vaules that work
+    def __init__(self, sensitivity_input:int(0.25), polarity_input:int(1)): #Defaut Vaules that work
         self.sensitivity= sensitivity_input
         self.polarity= polarity_input
+    def proccessing(self,sensor_vaules):
 
-    
+        normlized_list = interpret.normilize(sensor_vaules)
+        significant_list = interpret.significance(normlized_list)
+
+    def normilize(self,sensor_vaules):
+
+        self.avg = sum(sensor_vaules)/len(sensor_vaules)
+        print(self.avg)
+
+        self.norm = [None] * 3
+        for i in range(3):
+            self.norm[i] = (sensor_vaules[i]-self.avg)/self.avg
+        print(self.norm)
+        return self.norm
+
+    def significance(self,norm_list):
+        self.significant = [0] * 3
+        for i in range(3):
+            if norm_list[i] > int(self.sensitivity):
+                self.significant[i] = 1
+        print(self.significant)
+
+        return self.significant
+
 
 
 def LineFollowing(Sensor_Cycles:-1):
@@ -298,7 +321,13 @@ def LineFollowing(Sensor_Cycles:-1):
         Sensor_Cycles -=1
 
         Sensor_List = sensor.read_sensor()
+        #Testing Vaules
+        Sensor_List = [600,600,1000]
+
         print(Sensor_List)
+
+        Line_Direction = interpret.proccessing(Sensor_List)
+
         time.sleep(1) #Delay for testing
         
 def User_Input():
@@ -321,7 +350,7 @@ def User_Input():
 if __name__ == "__main__":
     px = Picarx()
     sensor = Sensor()
-    #interpret = Interpreter() #Default vaules of 0.25 & 1
+    interpret = Interpreter(0.25,1) #Default vaules of 0.25 & 1
     User_Cycles = User_Input()
     print(User_Cycles)
     LineFollowing(User_Cycles)
