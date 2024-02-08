@@ -348,18 +348,19 @@ class Controller():
         except:
             self.steering_factor = 1
     def Control(self,Line_Direction):
+        Steer_angle = 0
+
         if Line_Direction == [0,1,0]:
             print("Forward")
             Steer_angle = self.steering_factor * 0
         elif Line_Direction == [1,0,0]:
             print("Turn Left")
-            Steer_angle = self.steering_factor * 20
+            Steer_angle = self.steering_factor * -20
         elif Line_Direction == [0,0,1]:
             print("Turn Right")
-            Steer_angle = self.steering_factor * -20
+            Steer_angle = self.steering_factor * 20
 
         else:
-            Steer_angle = self.steering_factor * 0
             print("Lost")
 
         self.px.set_dir_servo_angle(Steer_angle)
