@@ -342,6 +342,7 @@ class Interpreter():
     
 class Controller():
     def __init__(self):
+        self.px = Picarx()
         try:
             self.steering_factor = float(input("Input given Stearing Factor: "))
         except:
@@ -349,12 +350,20 @@ class Controller():
     def Control(self,Line_Direction):
         if Line_Direction == [0,1,0]:
             print("Forward")
+            Steer_angle = self.steering_factor * 0
         elif Line_Direction == [1,0,0]:
             print("Turn Left")
+            Steer_angle = self.steering_factor * 20
         elif Line_Direction == [0,0,1]:
             print("Turn Right")
+            Steer_angle = self.steering_factor * -20
+
         else:
+            Steer_angle = self.steering_factor * 0
             print("Lost")
+
+        self.px.set_dir_servo_angle(Steer_angle)
+        print(Steer_angle)
 
 
 
