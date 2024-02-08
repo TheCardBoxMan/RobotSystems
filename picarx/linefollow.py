@@ -18,17 +18,14 @@ px = pc.Picarx()
 
 class Sensor:
     def __init__(self):
-        self.adc_1 = ADC(channel=1)
-        self.adc_2 = ADC(channel=2)
-        self.adc_3 = ADC(channel=3)
+        self.adc_1 = ADC('A0') #Right
+        self.adc_2 = ADC('A1') #Middle
+        self.adc_3 = ADC('A2') #Left
+        self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None)
 
     def read_sensor(self):
-        # Poll the three ADC structures and put their outputs into a list
-        sensor_readings = px.get_grayscale_data(self)
-        return sensor_readings
+        print("read sensor")
+        return (self.adc.read())
     
 if __name__=='__main__':
     print("Line Following Start")
-    my_sensor = Sensor()
-    readings = my_sensor.read_sensor()
-    print("Sensor readings:", readings)

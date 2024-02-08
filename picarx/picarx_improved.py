@@ -1,4 +1,3 @@
-import logging
 import time
 import os
 import math
@@ -7,6 +6,7 @@ try:
     from robot_hat import Grayscale_Module, Ultrasonic
     from robot_hat.utils import reset_mcu, run_command
 except ImportError:
+    print("This is not a PiCar-X System, Shadowing Hardware")
     from sim_robot_hat import Pin, ADC, PWM, Servo, fileDB
     from sim_robot_hat import Grayscale_Module, Ultrasonic
     from sim_robot_hat import reset_mcu, run_command
@@ -272,6 +272,17 @@ class Picarx(object):
             self.config_flie.set("cliff_reference", self.cliff_reference)
         else:
             raise ValueError("grayscale reference must be a 1*3 list")
+
+class Sensor:
+    def __init__(self):
+        self.adc_1 = ADC('A0') #Right
+        self.adc_2 = ADC('A1') #Middle
+        self.adc_3 = ADC('A2') #Left
+        self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None)
+
+    def read_sensor(self):
+        print("read sensor")
+        return (self.adc.read())
 
 if __name__ == "__main__":
     px = Picarx()
