@@ -307,7 +307,7 @@ class Interpreter():
     def significance(self,norm_list):
         self.significant = [0] * 3
         for i in range(3):
-            if norm_list[i] > int(self.sensitivity):
+            if self.polarity * norm_list[i] > int(self.sensitivity):
                 self.significant[i] = 1
         print(self.significant)
 
@@ -322,7 +322,7 @@ def LineFollowing(Sensor_Cycles:-1):
 
         Sensor_List = sensor.read_sensor()
         #Testing Vaules
-        Sensor_List = [600,600,1000]
+        #Sensor_List = [600,600,1000]
 
         print(Sensor_List)
 
