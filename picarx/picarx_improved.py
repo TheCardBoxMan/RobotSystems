@@ -281,8 +281,8 @@ class Sensor: #Set up sensors and read the vaule
         self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None)
 
     def read_sensor(self):
-        print("read sensor")
-        return (self.adc.read())
+        self.adc = px.get_grayscale_data()
+        return self.adc
 
 class Interpreter():
     def __init__(self, sensitivity_input:float(0.25), polarity_input:int(1)): #Defaut Vaules that work
@@ -297,8 +297,8 @@ def LineFollowing(Sensor_Cycles:-1):
     while Sensor_Cycles != 0:
         Sensor_Cycles -=1
 
-        reading = sensor.read_sensor
-        print(reading)
+        Sensor_List = sensor.read_sensor()
+        print(Sensor_List)
         time.sleep(1) #Delay for testing
         
 def User_Input():
