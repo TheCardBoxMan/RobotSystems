@@ -13,6 +13,7 @@ except ImportError:
 
 import atexit
 from readerwriterlock import rwlock
+import concurrent.futures
 reset_mcu()
 time.sleep(0.2)
 
@@ -274,19 +275,6 @@ class Picarx(object):
         else:
             raise ValueError("grayscale reference must be a 1*3 list")
 
-#Docking Setup
-class Bus:
-    def __init__(self):
-        self.message = None  # Initialize the message attribute to None
-        self.lock = rwlock.RWLockWrite() # Initialize the read-write lock with writer priority
-
-    def write(self,message):
-        with self.lock.gen_wlock():
-            self.message = message
-    def read(self):
-        with self.lock.gen_rlock():
-            message = self.message
-            return message
 
 
 
@@ -460,6 +448,23 @@ def User_Input():
             print("Not a Valid Input")
     else:
         print("Not a Valid Input")
+
+#Docking Setup
+class Bus:
+    def __init__(self):
+        self.message = None  # Initialize the message attribute to None
+        self.lock = rwlock.RWLockWrite() # Initialize the read-write lock with writer priority
+
+    def write(self,message):
+        with self.lock.gen_wlock():
+            self.message = message
+    def read(self):
+        with self.lock.gen_rlock():
+            message = self.message
+            return message
+
+    def Initilize_Bus():
+        
 
 if __name__ == "__main__":
     px = Picarx()
