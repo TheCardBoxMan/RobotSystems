@@ -469,6 +469,7 @@ def Run_Bus():
     sensor_delay = .01
     interpreter_delay = .02
     controller_delay = .03
+
     print("Start Bus")
     with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
         eSensor = executor.submit(sensor.producer, sensor_values_bus,sensor_delay)
@@ -489,12 +490,12 @@ if __name__ == "__main__":
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     controller = Controller()
 
-    Run_Bus()
+    #Run_Bus()
 
 
-   # User_Cycles = User_Input()
-   # print(User_Cycles)
-    #LineFollowing(User_Cycles)
+    User_Cycles = User_Input()
+    print(User_Cycles)
+    LineFollowing(User_Cycles)
     print("Finished")
     
     #Testing
