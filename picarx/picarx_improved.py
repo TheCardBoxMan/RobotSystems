@@ -301,7 +301,7 @@ class Sensor: #Set up sensors and read the vaule
         while True:
             #Constant Updated Sensor Vaules
             sensor_data = self.read_sensor(Calibrator) 
-            print(sensor_data)
+            print("Raw Sensor Data: ",sensor_data)
             bus.write(sensor_data)
             time.sleep(delay)
 
@@ -340,23 +340,22 @@ class Interpreter():
     def normilize(self,sensor_vaules):
 
         self.avg = sum(sensor_vaules)/len(sensor_vaules)
-        print(self.avg)
+        #print(self.avg)
 
         self.norm = [None] * 3
         for i in range(3):
             self.norm[i] = (sensor_vaules[i]-self.avg)/self.avg
-        print(self.norm)
+        #print("Normilized Vaules: {self.norm}")
         return self.norm
 
     def significance(self,norm_list):
         self.significant = [0] * 3
-        print(self.sensitivity)
+        #print(self.sensitivity)
         for i in range(3):
             Vaule = self.polarity * norm_list[i]
             if Vaule > self.sensitivity:
                 self.significant[i] = 1
-        print(self.significant)
-
+        
         return self.significant
     
     def consumer_producer(self,input_bus,output_bus, delay):
@@ -364,7 +363,7 @@ class Interpreter():
                 data = input_bus.read()
                 if data != None:
                     proccessed_data = self.proccessing(data)
-                    print(proccessed_data)
+                    print("Proccessed Data: ", proccessed_data)
                     output_bus.write(proccessed_data)
                 time.sleep(delay)
 
