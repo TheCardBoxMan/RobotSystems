@@ -275,7 +275,7 @@ class Picarx(object):
             raise ValueError("grayscale reference must be a 1*3 list")
 
 #Docking Setup
-class Bus_Stop:
+class Bus:
     def __init__(self):
         self.message = None  # Initialize the message attribute to None
         self.lock = rwlock.RWLockWrite() # Initialize the read-write lock with writer priority
@@ -307,7 +307,14 @@ class Sensor: #Set up sensors and read the vaule
         return self.calibrated_adc
     
     def producer(self,bus,delay):
-        None
+        while True:
+            #Constant Updated Sensor Vaules
+            sensor_data = self.read_sensor() 
+            print(sensor_data)
+            bus.write(sensor_data)
+            time.sleep(delay)
+
+
 
     def Intial_calibrate(self):
         Intial_Vaules = px.get_grayscale_data()
@@ -360,6 +367,17 @@ class Interpreter():
         print(self.significant)
 
         return self.significant
+    
+    def consumer_producer(self,input_bus,output_bus, delay):
+        while True:
+                data = input_bus.read()
+                if data != None:
+                    proccessed_data = self.proccessing(data)
+                    print(proccessed_data)
+                    output_bus.write(proccessed_data)
+                time.sleep(delay)
+
+
     
 class Controller():
     def __init__(self):
