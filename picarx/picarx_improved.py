@@ -366,7 +366,6 @@ class Interpreter():
                 time.sleep(delay)
 
 
-    
 class Controller():
     def __init__(self):
         self.px = Picarx()
@@ -450,7 +449,7 @@ def User_Input():
         print("Not a Valid Input")
 
 #Docking Setup
-class Bus:
+class Broadcast:
     def __init__(self):
         self.message = None  # Initialize the message attribute to None
         self.lock = rwlock.RWLockWrite() # Initialize the read-write lock with writer priority
@@ -463,16 +462,37 @@ class Bus:
             message = self.message
             return message
 
-    def Initilize_Bus():
-        None
+    def Run_Bus():
+        sensor_values_bus = Broadcast.read()
+        interpreter_bus = Broadcast.read()
+        #Input Delays
+        sensor_delay = .01
+        interpreter_delay = .02
+        controller_delay = .03
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+            eSensor = executor.submit(sensor.producer, sensor_values_bus,sensor_delay)
+            eInterpreter = executor.submit(interpret.consumer_producer,sensor_values_bus, interpreter_bus,interpreter_delay)
+            eController = executor.submit(controller.consumer, interpreter_bus, controller_delay)
+        try:
+            eSensor.result()
+            eInterpreter.result()
+            eController.result()
+        except Exception as e:
+            print("Bus Error: {e}")
+
+
 
 if __name__ == "__main__":
     px = Picarx()
     sensor = Sensor()
-    controller = Controller()
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
+    controller = Controller()
+
+
     User_Cycles = User_Input()
     print(User_Cycles)
+
     LineFollowing(User_Cycles)
     print("Finished")
     
