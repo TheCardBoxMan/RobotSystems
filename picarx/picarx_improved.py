@@ -12,6 +12,7 @@ except ImportError:
     from sim_robot_hat import reset_mcu, run_command
 
 import atexit
+from readerwriterlock import rwlock
 reset_mcu()
 time.sleep(0.2)
 
@@ -273,6 +274,23 @@ class Picarx(object):
         else:
             raise ValueError("grayscale reference must be a 1*3 list")
 
+#Docking Setup
+class Bus_Stop:
+    def __init__(self):
+        self.message = None  # Initialize the message attribute to None
+        self.lock = rwlock.RWLockWrite() # Initialize the read-write lock with writer priority
+
+    def write(self,message):
+        with self.lock.gen_wlock():
+            self.message = message
+    def read(self):
+        with self.lock.gen_rlock():
+            message = self.message
+            return message
+
+
+
+
 class Sensor: #Set up sensors and read the vaule
     def __init__(self):
         self.adc_1 = ADC('A0') #Right
@@ -288,6 +306,9 @@ class Sensor: #Set up sensors and read the vaule
         self.calibrated_adc = sensor.calibrate(self.adc,Calibrator)
         return self.calibrated_adc
     
+    def producer(self,bus,delay):
+        None
+
     def Intial_calibrate(self):
         Intial_Vaules = px.get_grayscale_data()
         #Testing
@@ -348,8 +369,8 @@ class Controller():
             self.power = float(input("Input given Power: "))
 
         except:
-            self.steering_factor = 1
-            self.power = 25
+            self.steering_factor = 1.5
+            self.power = 40
     def Control(self,Line_Direction):
         Steer_angle = 0
 
