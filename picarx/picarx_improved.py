@@ -12,7 +12,7 @@ except ImportError:
     from sim_robot_hat import reset_mcu, run_command
 
 import atexit
-#from readerwriterlock import rwlock
+from readerwriterlock import rwlock
 import concurrent.futures
 reset_mcu()
 time.sleep(0.2)
