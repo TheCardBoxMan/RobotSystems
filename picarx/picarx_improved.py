@@ -421,6 +421,14 @@ class Controller():
         print(Steer_angle)
         self.px.forward(controller.power)
 
+    def consumer(self,input_bus,delay):
+        while True:
+            data = input_bus.read()
+            if data != None:
+                self.Control(data)
+            time.sleep(delay)
+
+
 
 
 def LineFollowing(Sensor_Cycles):
