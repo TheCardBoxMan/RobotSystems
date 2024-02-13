@@ -295,9 +295,12 @@ class Sensor: #Set up sensors and read the vaule
         return self.calibrated_adc
     
     def producer(self,bus,delay):
+        #Calibrate
+        Calibrator = sensor.Intial_calibrate()
+
         while True:
             #Constant Updated Sensor Vaules
-            sensor_data = self.read_sensor() 
+            sensor_data = self.read_sensor(Calibrator) 
             print(sensor_data)
             bus.write(sensor_data)
             time.sleep(delay)
@@ -490,12 +493,12 @@ if __name__ == "__main__":
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     controller = Controller()
 
-    #Run_Bus()
+    Run_Bus()
 
 
-    User_Cycles = User_Input()
-    print(User_Cycles)
-    LineFollowing(User_Cycles)
+    #User_Cycles = User_Input()
+    #print(User_Cycles)
+    #LineFollowing(User_Cycles)
     print("Finished")
     
     #Testing
