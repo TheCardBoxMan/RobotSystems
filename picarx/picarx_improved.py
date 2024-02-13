@@ -464,7 +464,7 @@ class Bus:
             return message
 
     def Initilize_Bus():
-        
+        None
 
 if __name__ == "__main__":
     px = Picarx()
