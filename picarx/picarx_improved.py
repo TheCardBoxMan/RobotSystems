@@ -358,7 +358,7 @@ class Interpreter():
 
         normlized_list = interpret.normilize(sensor_vaules)
         significant_list = interpret.significance(normlized_list)
-        print("Proccessed Data: ", significant_list)
+        #print("Proccessed Data: ", significant_list)
 
         return significant_list
 
