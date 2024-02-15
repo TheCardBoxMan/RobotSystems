@@ -427,7 +427,7 @@ class Controller():
             self.px.set_dir_servo_angle(self.Steer_angle)
             print(self.Steer_angle)
             self.px.forward(controller.power)
-            
+
         elif obstacle_avoidance == True:    
             px.stop()
             print("Object Found")
@@ -511,6 +511,7 @@ def Run_Bus():
 
 def RossBus():
     # Initiate data and termination busses
+    
 
     BusSensor = rr.Bus(sensor.read_sensor(),"Grey Scale Bus") 
     BusObstacle = rr.Bus(px.obstacle_avoidance(),"Obsticle Bus")
@@ -568,6 +569,7 @@ def RossBus():
 
     # Create a list of producer-consumers to execute concurrently
     producer_consumer_list = [readSensor,
+                            readAvoidance,
                           interpretData,
                           controlPiCar,
                           printBuses,
