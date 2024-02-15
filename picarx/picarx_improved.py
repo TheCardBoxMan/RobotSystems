@@ -132,7 +132,7 @@ class Picarx(object):
     def obstacle_avoidance(self):
     
         distance = self.get_distance()
-        print(distance)
+        print("Sensor Distance: " ,distance)
         if distance < self.objectdisthesh:
             Obstacle = True
         else:
@@ -357,6 +357,8 @@ class Interpreter():
 
         normlized_list = interpret.normilize(sensor_vaules)
         significant_list = interpret.significance(normlized_list)
+        print("Proccessed Data: ", significant_list)
+
         return significant_list
 
     def normilize(self,sensor_vaules):
@@ -430,7 +432,7 @@ class Controller():
             else:
                 print("Lost")
             self.px.set_dir_servo_angle(self.Steer_angle)
-            print(self.Steer_angle)
+            print("Steer Angle: ", self.Steer_angle)
             self.px.forward(controller.power)
 
         elif obstacle_avoidance == True:    
