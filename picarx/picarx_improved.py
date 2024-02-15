@@ -128,7 +128,7 @@ class Picarx(object):
     
         distance = self.get_distance()
         print(distance)
-        if distance < 20:
+        if distance < 10:
             Obstacle = True
         else:
             Obstacle = False
