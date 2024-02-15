@@ -14,7 +14,7 @@ except ImportError:
 import atexit
 from readerwriterlock import rwlock
 import concurrent.futures
-import rossros as ross
+import rossros as rr
 
 reset_mcu()
 time.sleep(0.2)
@@ -127,7 +127,7 @@ class Picarx(object):
     def obstacle_avoidance(self):
     
         distance = self.get_distance()
-        logging.debug(distance)
+        print(distance)
         if distance < 20:
             Obstacle = True
         else:
@@ -517,13 +517,26 @@ if __name__ == "__main__":
     controller = Controller()
     CalibratedSensor = sensor.Intial_calibrate()
     #Create the busses
-    #BusSensor = ross.Bus(sensor.read_sensor(CalibratedSensor)) #SensorBus
-    #BusObstacle = ross.Bus(px.obstacle_avoidance()) #UltrasoundBus
-    #BusInterpret = ross.Bus(interpret.proccessing(CalibratedSensor)) #Interpret Bus
-    #BusControl = ross.Bus(controller.Control(interpret.proccessing(sensor.read_sensor(CalibratedSensor)),False))
+    BusSensor = rr.Bus(sensor.read_sensor(CalibratedSensor),"Grey Scale Bus") 
+    BusObstacle = rr.Bus(px.obstacle_avoidance(),"Obsticle Bus")
+    BusInterpret = rr.Bus(interpret.proccessing(CalibratedSensor),"Interpret Bus") 
+    BusControl = rr.Bus(controller.Control(interpret.proccessing(sensor.read_sensor(CalibratedSensor)),False),"Control Bus")
+    bTerminate = rr.Bus(0, "Termination Bus")
+
+    
+    readSensor = rr.Producer(
+        sensor.read_sensor(CalibratedSensor),#Function for generate
+        BusSensor,#IOutput Bus
+        0.05,
+        bTerminate,
+        "Read Sensor Data"
+        )
+    
+
+
 
     #Self Created Bus
-    Run_Bus()
+    #Run_Bus()
 
 
     #User_Cycles = User_Input()
