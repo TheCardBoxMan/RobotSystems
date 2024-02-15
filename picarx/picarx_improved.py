@@ -431,8 +431,8 @@ class Controller():
             print("No Object Data")
 
 
-        self.px.set_dir_servo_angle(Steer_angle)
-        print(Steer_angle)
+        self.px.set_dir_servo_angle(self.Steer_angle)
+        print(self.Steer_angle)
         self.px.forward(controller.power)
 
     def consumer(self,input_bus,delay):
