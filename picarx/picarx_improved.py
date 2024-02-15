@@ -432,11 +432,11 @@ class Controller():
             elif Line_Direction == [0,0,1]:
                 print("Turn Right")
                 Last_Direction = "Right"
-                Steer_angle = self.steering_factor * 20
+                self.Steer_angle = self.steering_factor * 20
             elif Line_Direction == [0,1,1]:
                 print("Turn Less Right")
                 Last_Direction = "Right"
-                Steer_angle = self.steering_factor * 10
+                self.Steer_angle = self.steering_factor * 10
 
             else:
                 print("Lost")
