@@ -316,6 +316,7 @@ class Sensor: #Set up sensors and read the vaule
         #self.adc= [600,600,1000]
 
         self.calibrated_adc = sensor.calibrate(self.adc,self.Calibrator)
+        print("Raw Sensor Data: ",self.calibrated_adc)
         return self.calibrated_adc
     
     def producer(self,bus,delay):
