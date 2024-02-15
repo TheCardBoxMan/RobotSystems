@@ -507,20 +507,73 @@ def Run_Bus():
         print("Bus Error: {e}")
 
 def RossBus():
+    # Initiate data and termination busses
+
     BusSensor = rr.Bus(sensor.read_sensor(),"Grey Scale Bus") 
     BusObstacle = rr.Bus(px.obstacle_avoidance(),"Obsticle Bus")
-    BusInterpret = rr.Bus(interpret.proccessing(),"Interpret Bus") 
+    BusInterpret = rr.Bus(interpret.proccessing(sensor.read_sensor()),"Interpret Bus") 
     BusControl = rr.Bus(controller.Control(interpret.proccessing(sensor.read_sensor()),px.obstacle_avoidance()),"Control Bus")
+    #Replace False with px.obstacle_avoidance()
     bTerminate = rr.Bus(0, "Termination Bus")
 
-    
+    # Read Sensor Data
     readSensor = rr.Producer(
         sensor.read_sensor(),#Function for generate
-        BusSensor,#IOutput Bus
-        0.05,
+        BusSensor,#Output Bus
+        0.05,#Delay of Bus
         bTerminate,
         "Read Sensor Data"
         )
+
+    readAvoidance = rr.Producer(
+    px.obstacle_avoidance,  # function that will generate data
+    BusObstacle,  # output data bus
+    0.05,  # delay between data generation cycles
+    bTerminate,  # bus to watch for termination signal
+    "Read Avoidance signal")
+
+    interpretData = rr.ConsumerProducer(
+            interpret.proccessing,  # function that will process data
+            BusSensor,  # input data buses
+            BusInterpret,  # output data bus
+            0.05,  # delay between data control cycles
+            bTerminate,  # bus to watch for termination signal
+            "Interpret Grey Scale Data")
+
+    controlPiCar = rr.Consumer(
+            controller.Control,  # function that will process data
+            (BusInterpret, BusObstacle),  # input data buses
+            0.05,  # delay between data control cycles
+            bTerminate,  # bus to watch for termination signal
+            "Control PiCar")
+
+    printBuses = rr.Printer(
+    (BusSensor, BusObstacle, BusInterpret, BusControl, bTerminate),  # input data buses
+
+    0.25,  # delay between printing cycles
+    bTerminate,  # bus to watch for termination signal
+    "Print raw and derived data",  # Name of printer
+    "Data bus readings are: ")  # Prefix for output
+
+    terminationTimer = rr.Timer(
+            bTerminate,  # Output data bus
+            10,  # Duration
+            0.01,  # Delay between checking for termination time
+            bTerminate,  # Bus to check for termination signal
+            "Termination timer")  # Name of this timer
+    
+
+    # Create a list of producer-consumers to execute concurrently
+    producer_consumer_list = [readSensor,
+                          interpretData,
+                          controlPiCar,
+                          printBuses,
+                          terminationTimer]
+    
+
+    rr.runConcurrently(producer_consumer_list)
+
+    
 
 if __name__ == "__main__":
     px = Picarx()
@@ -528,10 +581,10 @@ if __name__ == "__main__":
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     controller = Controller()
     
-    #RossBus()
+    RossBus()
     
     #Self Created Bus
-    Run_Bus()
+    #Run_Bus()
 
 
     #User_Cycles = User_Input()
