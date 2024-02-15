@@ -120,7 +120,7 @@ class Picarx(object):
     
     #Set Distance
     try:
-        objectdisthesh = input("Enter Object Distance Detection: ")
+        objectdisthesh = int(input("Enter Object Distance Detection: "))
     except:
         objectdisthesh = 5
 
@@ -515,8 +515,13 @@ def Run_Bus():
         print("Bus Error: {e}")
 
 def RossBus():
+
+
     # Initiate data and termination busses
-    
+    try:
+        RunTime = int(input("Enter Run Time: "))
+    except:
+        RunTime = 10
 
     BusSensor = rr.Bus(sensor.read_sensor(),"Grey Scale Bus") 
     BusObstacle = rr.Bus(px.obstacle_avoidance(),"Obsticle Bus")
@@ -558,7 +563,6 @@ def RossBus():
 
     printBuses = rr.Printer(
     (BusSensor, BusObstacle, BusInterpret, BusControl, bTerminate),  # input data buses
-
     0.25,  # delay between printing cycles
     bTerminate,  # bus to watch for termination signal
     "Print raw and derived data",  # Name of printer
@@ -566,7 +570,7 @@ def RossBus():
 
     terminationTimer = rr.Timer(
             bTerminate,  # Output data bus
-            10,  # Duration
+            RunTime,  # Duration
             0.01,  # Delay between checking for termination time
             bTerminate,  # Bus to check for termination signal
             "Termination timer")  # Name of this timer
