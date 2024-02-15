@@ -553,7 +553,7 @@ def RossBus():
     readAvoidance = rr.Producer(
     px.obstacle_avoidance,  # function that will generate data
     BusObstacle,  # output data bus
-    0.05,  # delay between data generation cycles
+    0.2,  # delay between data generation cycles
     bTerminate,  # bus to watch for termination signal
     "Read Avoidance signal")
 
@@ -561,7 +561,7 @@ def RossBus():
             interpret.proccessing,  # function that will process data
             BusSensor,  # input data buses
             BusInterpret,  # output data bus
-            0.15,  # delay between data control cycles
+            0.1,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Interpret Grey Scale Data")
 
