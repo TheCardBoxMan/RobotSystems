@@ -557,14 +557,14 @@ def RossBus():
             interpret.proccessing,  # function that will process data
             BusSensor,  # input data buses
             BusInterpret,  # output data bus
-            0.05,  # delay between data control cycles
+            0.2,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Interpret Grey Scale Data")
 
     controlPiCar = rr.Consumer(
             controller.Control,  # function that will process data
             (BusInterpret, BusObstacle),  # input data buses
-            0.05,  # delay between data control cycles
+            0.4,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Control PiCar")
 
@@ -578,7 +578,7 @@ def RossBus():
     terminationTimer = rr.Timer(
             bTerminate,  # Output data bus
             RunTime,  # Duration
-            0.01,  # Delay between checking for termination time
+            0.1,  # Delay between checking for termination time
             bTerminate,  # Bus to check for termination signal
             "Termination timer")  # Name of this timer
     
