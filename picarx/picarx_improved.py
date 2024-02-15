@@ -388,6 +388,8 @@ class Interpreter():
 class Controller():
     def __init__(self):
         self.px = Picarx()
+        self.Steer_angle = 0
+
         try:
             self.steering_factor = float(input("Input given Stearing Factor: "))
             self.power = float(input("Input given Power: "))
@@ -396,22 +398,21 @@ class Controller():
             self.steering_factor = 1.5
             self.power = 40
     def Control(self,Line_Direction,obstacle_avoidance):
-        Steer_angle = 0
 
         if obstacle_avoidance == False:
 
             if Line_Direction == [0,1,0]:
                 print("Forward")
-                Steer_angle = self.steering_factor * 0
+                self.Steer_angle = self.steering_factor * 0
             elif Line_Direction == [1,0,0]:
                 print("Turn Left")
                 Last_Direction = "Left"
-                Steer_angle = self.steering_factor * -20
+                self.Steer_angle = self.steering_factor * -20
 
             elif Line_Direction == [1,1,0]:
                 print("Turn Less Left")
                 Last_Direction = "Left"
-                Steer_angle = self.steering_factor * -10
+                self.Steer_angle = self.steering_factor * -10
             elif Line_Direction == [0,0,1]:
                 print("Turn Right")
                 Last_Direction = "Right"
