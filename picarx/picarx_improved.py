@@ -615,7 +615,7 @@ if __name__ == "__main__":
     #print(User_Cycles)
     #LineFollowing(User_Cycles)
     print("Finished")
-    
+    px.stop()
     #Testing
 
 
