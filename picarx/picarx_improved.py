@@ -424,16 +424,16 @@ class Controller():
 
             else:
                 print("Lost")
+            self.px.set_dir_servo_angle(self.Steer_angle)
+            print(self.Steer_angle)
+            self.px.forward(controller.power)
+            
         elif obstacle_avoidance == True:    
             px.stop()
             print("Object Found")
         else:
             print("No Object Data")
 
-
-        self.px.set_dir_servo_angle(self.Steer_angle)
-        print(self.Steer_angle)
-        self.px.forward(controller.power)
 
     def consumer(self,input_bus,delay):
         while True:
