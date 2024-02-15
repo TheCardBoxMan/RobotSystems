@@ -304,22 +304,20 @@ class Sensor: #Set up sensors and read the vaule
         self.adc_2 = ADC('A1') #Middle
         self.adc_3 = ADC('A2') #Left
         self.adc = Grayscale_Module(self.adc_1,self.adc_1,self.adc_3,reference=None) #Currently Doesn't do anything
-
-    def read_sensor(self,Calibrator):
+        self.Calibrator = self.Intial_calibrate()
+    def read_sensor(self):
         self.adc = px.get_grayscale_data() #Already gives it in a list... ex: [600,600,1000]
         #Testing
         #self.adc= [600,600,1000]
 
-        self.calibrated_adc = sensor.calibrate(self.adc,Calibrator)
+        self.calibrated_adc = sensor.calibrate(self.adc,self.Calibrator)
         return self.calibrated_adc
     
     def producer(self,bus,delay):
-        #Calibrate
-        Calibrator = sensor.Intial_calibrate()
 
         while True:
             #Constant Updated Sensor Vaules
-            sensor_data = self.read_sensor(Calibrator) 
+            sensor_data = self.read_sensor() 
             print("Raw Sensor Data: ",sensor_data)
             bus.write(sensor_data)
             time.sleep(delay)
@@ -450,7 +448,7 @@ def LineFollowing(Sensor_Cycles):
     print("Line Following Start")
     while Sensor_Cycles != 0:
         Sensor_Cycles -=1
-        Sensor_List = sensor.read_sensor(Calibrator)
+        Sensor_List = sensor.read_sensor()
         print(Sensor_List)
 
         Line_Direction = interpret.proccessing(Sensor_List)
@@ -508,35 +506,32 @@ def Run_Bus():
     except Exception as e:
         print("Bus Error: {e}")
 
+def RossBus():
+    BusSensor = rr.Bus(sensor.read_sensor(),"Grey Scale Bus") 
+    BusObstacle = rr.Bus(px.obstacle_avoidance(),"Obsticle Bus")
+    BusInterpret = rr.Bus(interpret.proccessing(),"Interpret Bus") 
+    BusControl = rr.Bus(controller.Control(interpret.proccessing(sensor.read_sensor()),px.obstacle_avoidance()),"Control Bus")
+    bTerminate = rr.Bus(0, "Termination Bus")
 
+    
+    readSensor = rr.Producer(
+        sensor.read_sensor(),#Function for generate
+        BusSensor,#IOutput Bus
+        0.05,
+        bTerminate,
+        "Read Sensor Data"
+        )
 
 if __name__ == "__main__":
     px = Picarx()
     sensor = Sensor()
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     controller = Controller()
-    CalibratedSensor = sensor.Intial_calibrate()
-    #Create the busses
-    BusSensor = rr.Bus(sensor.read_sensor(CalibratedSensor),"Grey Scale Bus") 
-    BusObstacle = rr.Bus(px.obstacle_avoidance(),"Obsticle Bus")
-    BusInterpret = rr.Bus(interpret.proccessing(CalibratedSensor),"Interpret Bus") 
-    BusControl = rr.Bus(controller.Control(interpret.proccessing(sensor.read_sensor(CalibratedSensor)),False),"Control Bus")
-    bTerminate = rr.Bus(0, "Termination Bus")
-
     
-    readSensor = rr.Producer(
-        sensor.read_sensor(CalibratedSensor),#Function for generate
-        BusSensor,#IOutput Bus
-        0.05,
-        bTerminate,
-        "Read Sensor Data"
-        )
+    #RossBus()
     
-
-
-
     #Self Created Bus
-    #Run_Bus()
+    Run_Bus()
 
 
     #User_Cycles = User_Input()
