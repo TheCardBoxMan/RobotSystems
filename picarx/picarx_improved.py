@@ -587,8 +587,7 @@ def RossBus():
     producer_consumer_list = [readSensor,
                             readAvoidance,
                           interpretData,
-                          controlPiCar,
-                          printBuses,
+                          controlPiCar,                      
                           terminationTimer]
     
 
