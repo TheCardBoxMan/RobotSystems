@@ -535,7 +535,7 @@ def RossBus():
 
     # Read Sensor Data
     readSensor = rr.Producer(
-        sensor.read_sensor(),#Function for generate
+        sensor.read_sensor,#Function for generate
         BusSensor,#Output Bus
         0.05,#Delay of Bus
         bTerminate,
