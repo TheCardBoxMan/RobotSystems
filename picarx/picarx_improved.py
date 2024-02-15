@@ -118,6 +118,11 @@ class Picarx(object):
         # --------- stop when canceled ---------
         atexit.register(self.stop)
     
+    #Set Distance
+    try:
+        objectdisthesh = input("Enter Object Distance Detection: ")
+    except:
+        objectdisthesh = 5
 
 
     #Ultrasonic Sensor
@@ -128,7 +133,7 @@ class Picarx(object):
     
         distance = self.get_distance()
         print(distance)
-        if distance < 10:
+        if distance < self.objectdisthesh:
             Obstacle = True
         else:
             Obstacle = False
