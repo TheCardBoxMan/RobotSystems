@@ -368,10 +368,14 @@ class Interpreter():
         #print(self.avg)
 
         self.norm = [None] * 3
-        for i in range(3):
-            self.norm[i] = (sensor_vaules[i]-self.avg)/self.avg
-        #print("Normilized Vaules: {self.norm}")
-        return self.norm
+        try:
+
+            for i in range(3):
+                self.norm[i] = (sensor_vaules[i]-self.avg)/self.avg
+            #print("Normilized Vaules: {self.norm}")
+            return self.norm
+        except:
+            self.norm [0,0,0]
 
     def significance(self,norm_list):
         self.significant = [0] * 3
