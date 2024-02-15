@@ -132,7 +132,7 @@ class Picarx(object):
             Obstacle = True
         else:
             Obstacle = False
-      
+        return Obstacle
 
 
     def set_motor_speed(self, motor, speed):
