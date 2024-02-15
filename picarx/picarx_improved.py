@@ -423,9 +423,11 @@ class Controller():
 
             else:
                 print("Lost")
-        else:
+        elif obstacle_avoidance == True:    
             px.stop()
             print("Object Found")
+        else:
+            print("No Object Data")
 
 
         self.px.set_dir_servo_angle(Steer_angle)
