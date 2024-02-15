@@ -14,6 +14,8 @@ except ImportError:
 import atexit
 from readerwriterlock import rwlock
 import concurrent.futures
+import rossros as ross
+
 reset_mcu()
 time.sleep(0.2)
 
@@ -115,7 +117,24 @@ class Picarx(object):
 
         # --------- stop when canceled ---------
         atexit.register(self.stop)
-        
+    
+
+
+    #Ultrasonic Sensor
+    def get_distance(self):
+        return self.ultrasonic.read()
+
+    def obstacle_avoidance(self):
+    
+        distance = self.get_distance()
+        logging.debug(distance)
+        if distance < 20:
+            Obstacle = True
+        else:
+            Obstacle = False
+      
+
+
     def set_motor_speed(self, motor, speed):
         ''' set motor speed
         
@@ -378,33 +397,38 @@ class Controller():
         except:
             self.steering_factor = 1.5
             self.power = 40
-    def Control(self,Line_Direction):
+    def Control(self,Line_Direction,obstacle_avoidance):
         Steer_angle = 0
 
-        if Line_Direction == [0,1,0]:
-            print("Forward")
-            Steer_angle = self.steering_factor * 0
-        elif Line_Direction == [1,0,0]:
-            print("Turn Left")
-            Last_Direction = "Left"
-            Steer_angle = self.steering_factor * -20
+        if obstacle_avoidance == False:
 
-        elif Line_Direction == [1,1,0]:
-            print("Turn Less Left")
-            Last_Direction = "Left"
-            Steer_angle = self.steering_factor * -10
-        elif Line_Direction == [0,0,1]:
-            print("Turn Right")
-            Last_Direction = "Right"
-            Steer_angle = self.steering_factor * 20
-        elif Line_Direction == [0,1,1]:
-            print("Turn Less Right")
-            Last_Direction = "Right"
-            Steer_angle = self.steering_factor * 10
+            if Line_Direction == [0,1,0]:
+                print("Forward")
+                Steer_angle = self.steering_factor * 0
+            elif Line_Direction == [1,0,0]:
+                print("Turn Left")
+                Last_Direction = "Left"
+                Steer_angle = self.steering_factor * -20
 
+            elif Line_Direction == [1,1,0]:
+                print("Turn Less Left")
+                Last_Direction = "Left"
+                Steer_angle = self.steering_factor * -10
+            elif Line_Direction == [0,0,1]:
+                print("Turn Right")
+                Last_Direction = "Right"
+                Steer_angle = self.steering_factor * 20
+            elif Line_Direction == [0,1,1]:
+                print("Turn Less Right")
+                Last_Direction = "Right"
+                Steer_angle = self.steering_factor * 10
+
+            else:
+                print("Lost")
         else:
+            px.stop()
+            print("Object Found")
 
-            print("Lost")
 
         self.px.set_dir_servo_angle(Steer_angle)
         print(Steer_angle)
@@ -414,7 +438,7 @@ class Controller():
         while True:
             data = input_bus.read()
             if data != None:
-                self.Control(data)
+                self.Control(data,False)
             time.sleep(delay)
 
 
@@ -491,7 +515,14 @@ if __name__ == "__main__":
     sensor = Sensor()
     interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
     controller = Controller()
+    CalibratedSensor = sensor.Intial_calibrate()
+    #Create the busses
+    #BusSensor = ross.Bus(sensor.read_sensor(CalibratedSensor)) #SensorBus
+    #BusObstacle = ross.Bus(px.obstacle_avoidance()) #UltrasoundBus
+    #BusInterpret = ross.Bus(interpret.proccessing(CalibratedSensor)) #Interpret Bus
+    #BusControl = ross.Bus(controller.Control(interpret.proccessing(sensor.read_sensor(CalibratedSensor)),False))
 
+    #Self Created Bus
     Run_Bus()
 
 
