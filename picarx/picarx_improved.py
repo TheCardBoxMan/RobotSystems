@@ -561,19 +561,19 @@ def RossBus():
             interpret.proccessing,  # function that will process data
             BusSensor,  # input data buses
             BusInterpret,  # output data bus
-            0.1,  # delay between data control cycles
+            0.3,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Interpret Grey Scale Data")
 
     controlPiCar = rr.Consumer(
             controller.Control,  # function that will process data
             (BusInterpret, BusObstacle),  # input data buses
-            0.15,  # delay between data control cycles
+            0.3,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Control PiCar")
 
     printBuses = rr.Printer(
-    (BusSensor, BusObstacle, BusInterpret, BusControl, bTerminate),  # input data buses
+    (BusSensor, BusObstacle, BusInterpret, BusControl, bTerminate),  # Currently turned off
     0.25,  # delay between printing cycles
     bTerminate,  # bus to watch for termination signal
     "Print raw and derived data",  # Name of printer
