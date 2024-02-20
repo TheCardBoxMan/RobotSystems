@@ -410,7 +410,7 @@ class Controller():
             self.steering_factor = float(input("Input given Stearing Factor: "))
 
         except:
-            self.power = 40
+            self.steering_factor = 1.5
         try:
             self.power = float(input("Input given Power: "))
         except:
