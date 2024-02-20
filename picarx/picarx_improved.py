@@ -555,7 +555,7 @@ if __name__ == "__main__":
     readSensor = rr.Producer(
         sensor.read_sensor,#Function for generate
         BusSensor,#Output Bus
-        0.05,#Delay of Bus
+        0.1,#Delay of Bus
         bTerminate,
         "Read Sensor Data"
         )
