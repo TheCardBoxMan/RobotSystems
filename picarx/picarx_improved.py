@@ -130,14 +130,18 @@ class Picarx(object):
         return self.ultrasonic.read()
 
     def obstacle_avoidance(self):
-    
-        distance = self.get_distance()
-        print("Sensor Distance: " ,distance)
-        if distance < self.objectdisthesh:
-            Obstacle = True
-        else:
+        try:
+            distance = self.get_distance()
+            print("Sensor Distance: " ,distance)
+            if distance < self.objectdisthesh:
+                Obstacle = True
+            else:
+                Obstacle = False
+            return Obstacle
+        except:
             Obstacle = False
-        return Obstacle
+            print("Failed")
+
 
 
     def set_motor_speed(self, motor, speed):
