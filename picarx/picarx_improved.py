@@ -557,24 +557,24 @@ if __name__ == "__main__":
         )
 
     readAvoidance = rr.Producer(
-    px.obstacle_avoidance,  # function that will generate data
-    BusObstacle,  # output data bus
-    0.2,  # delay between data generation cycles
-    bTerminate,  # bus to watch for termination signal
-    "Read Avoidance signal")
+            px.obstacle_avoidance,  # function that will generate data
+            BusObstacle,  # output data bus
+            0.2,  # delay between data generation cycles
+            bTerminate,  # bus to watch for termination signal
+            "Read Avoidance signal")
 
     interpretData = rr.ConsumerProducer(
             interpret.proccessing,  # function that will process data
             BusSensor,  # input data buses
             BusInterpret,  # output data bus
-            0.3,  # delay between data control cycles
+            0.1,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Interpret Grey Scale Data")
 
     controlPiCar = rr.Consumer(
             controller.Control,  # function that will process data
             (BusInterpret, BusObstacle),  # input data buses
-            0.3,  # delay between data control cycles
+            0.15,  # delay between data control cycles
             bTerminate,  # bus to watch for termination signal
             "Control PiCar")
 
