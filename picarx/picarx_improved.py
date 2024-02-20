@@ -528,8 +528,11 @@ def Run_Bus():
     except Exception as e:
         print("Bus Error: {e}")
 
-def RossBus():
-
+if __name__ == "__main__":
+    px = Picarx()
+    sensor = Sensor()
+    interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
+    controller = Controller()
 
     # Initiate data and termination busses
     try:
@@ -602,23 +605,14 @@ def RossBus():
 
     
 
-if __name__ == "__main__":
-    px = Picarx()
-    sensor = Sensor()
-    interpret = Interpreter(0.1,1) #Default vaules of 0.25 & 1
-    controller = Controller()
     
-    RossBus()
     
-    #Self Created Bus
-    #Run_Bus()
+
 
 
     #User_Cycles = User_Input()
     #print(User_Cycles)
     #LineFollowing(User_Cycles)
-    print("Finished")
-    px.stop()
     #Testing
 
 
