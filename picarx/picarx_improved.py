@@ -408,11 +408,14 @@ class Controller():
 
         try:
             self.steering_factor = float(input("Input given Stearing Factor: "))
-            self.power = float(input("Input given Power: "))
 
         except:
-            self.steering_factor = 1.5
             self.power = 40
+        try:
+            self.power = float(input("Input given Power: "))
+        except:
+            self.power = 40
+
     def Control(self,Line_Direction,obstacle_avoidance):
 
         if obstacle_avoidance == False:
